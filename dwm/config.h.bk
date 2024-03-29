@@ -69,6 +69,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY|ShiftMask, 			XK_b,	   spawn,		   SHCMD("bookmark")},
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
@@ -101,7 +102,8 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{ MODKEY, 						XK_Insert,	spawn,			SHCMD("xdotool type $(grep -v '^#' ~/.local/share/pers/bookmarks.txt | dmenu -i -l 50 | cut -d' ' -f1)")},
+	{ MODKEY, 						XK_Insert,	spawn,			SHCMD("pastebookmark")},
+
 };
 
 /* button definitions */

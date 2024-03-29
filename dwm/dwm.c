@@ -751,17 +751,16 @@ drawbar(Monitor *m)
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	drw_rect(drw, x, 0, m->ww - x, bh, 1, 1);
 
-	if (m == selmon) { /* status is only drawn on selected monitor */
-		rstext = strdup(stext);
-		if (splitstatus) {
-			mstext = strsep(&rstext, splitdelim);
-			msx = (m->ww - TEXTW(mstext) + lrpad) / 2; /* x position of middle status text */
-			drw_text(drw, msx, 0, TEXTW(mstext) - lrpad, bh, 0, mstext, 0);
-		}
-		tw = TEXTW(rstext) - lrpad + 2; /* 2px right padding */
-		drw_text(drw, m->ww - tw, 0, tw, bh, 0, rstext, 0);
-	}
 
+	rstext = strdup(stext);
+	if (splitstatus) {
+		mstext = strsep(&rstext, splitdelim);
+		msx = (m->ww - TEXTW(mstext) + lrpad) / 2; /* x position of middle status text */
+		drw_text(drw, msx, 0, TEXTW(mstext) - lrpad, bh, 0, mstext, 0);
+		}
+
+	tw = TEXTW(rstext) - lrpad + 2; /* 2px right padding */
+	drw_text(drw, m->ww - tw, 0, tw, bh, 0, rstext, 0);
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
 }
 
@@ -2036,9 +2035,11 @@ updatesizehints(Client *c)
 void
 updatestatus(void)
 {
+	Monitor* m;
 	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
 		strcpy(stext, "dwm-"VERSION);
-	drawbar(selmon);
+	for(m = mons; m; m = m->next)
+		drawbar(m);
 }
 
 void
