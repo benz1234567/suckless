@@ -1,3 +1,5 @@
+#!/bin/bash
+
 while true; do
 	xsetroot -name "$(date '+%r') $(~/suckless/.scripts/battery.sh) $(date '+%b %d')"
 	sleep 1
