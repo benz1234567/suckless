@@ -1,0 +1,12 @@
+batteryfile=/sys/class/power_supply/BAT0/capacity
+
+if [ ! -f $batteryfile ]; then
+	exit
+fi
+
+if [ $(cat /sys/class/power_supply/BAT0/uevent | head -n 3 | tail -n 1 | awk -F = '{print $2}') = "Charging"
+ ]; then
+	echo "$(cat batteryfile)% battery charging"
+else
+	echo "$(cat batteryfile)% battery"
+fi
