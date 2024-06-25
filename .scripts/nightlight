@@ -2,8 +2,8 @@
 
 while true;
 do
-	[ "$(date '+%H')" -gt "18" ] || [ "$(date '+%H')" -lt "6" ] && \
+  [ NIGHTLIGHT == true ] && { [ "$(date '+%H')" -gt "18" ] || [ "$(date '+%H')" -lt "6" ] && \
   redshift -O 1000 || \
-  redshift -x
+  redshift -x;}
 	sleep 1
 done
