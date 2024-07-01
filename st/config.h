@@ -7,7 +7,7 @@
  */
 //static char *font = "Cascadia Code:pixelsize=15:antialias=true:autohint=true";
 static char *font = "CaskaydiaCove Nerd Font,CaskaydiaCove:pixelsize=15:antialias=true:autohint=true";
-static int borderpx = 2;
+static int borderpx = 5;
 
 /*
  * What program is execed by st depends of these precedence rules:

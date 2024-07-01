@@ -1,9 +1,11 @@
 #!/bin/bash
 
+statefile="$HOME/.nightlight_state"
+
 while true;
 do
-  [ NIGHTLIGHT == true ] && { [ "$(date '+%H')" -gt "18" ] || [ "$(date '+%H')" -lt "6" ] && \
-  redshift -O 1000 || \
-  redshift -x;}
+  [ -f "$statefile" ] && { [ "$(date '+%H')" -gt "18" ] || [ "$(date '+%H')" -lt "6" ] && \
+  redshift -O 1000 > /dev/null; } || \
+  redshift -x > /dev/null
 	sleep 1
 done
