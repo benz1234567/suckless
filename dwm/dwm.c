@@ -424,6 +424,23 @@ attachBelow(Client *c)
 	c->mon->sel->next = c;
 
 }
+void attachBottom(Client *c) {
+    Client *last;
+
+    // Iterate through the list to find the last client
+    for (last = selmon->clients; last && last->next; last = last->next);
+
+    // If there's a last client, set its next pointer to the new client
+    if (last)
+        last->next = c;
+    else
+        // If there are no clients yet, the new client is the first client
+        selmon->clients = c;
+
+    // Set the new client's next pointer to NULL since it's the last client
+    c->next = NULL;
+}
+
 
 void
 attachstack(Client *c)
@@ -1100,6 +1117,8 @@ manage(Window w, XWindowAttributes *wa)
 		XRaiseWindow(dpy, c->win);
 	if( attachbelow )
 		attachBelow(c);
+  else if( attachbottom )
+    attachBottom(c);
 	else
 		attach(c);
 	attachstack(c);
@@ -1458,6 +1477,8 @@ sendmon(Client *c, Monitor *m)
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
 	if( attachbelow )
 		attachBelow(c);
+  else if( attachbottom )
+    attachBottom(c);
 	else
 		attach(c);
 	attachstack(c);
@@ -1719,7 +1740,7 @@ tagmon(const Arg *arg)
 void
 tile(Monitor *m)
 {
-	unsigned int i, n, h, mw, my, ty;
+	unsigned int i, n, h, r, g = 0, mw, my, ty;
 	Client *c;
 
 	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
@@ -1727,20 +1748,22 @@ tile(Monitor *m)
 		return;
 
 	if (n > m->nmaster)
-		mw = m->nmaster ? m->ww * m->mfact : 0;
+		mw = m->nmaster ? (m->ww - (g = gappx)) * m->mfact : 0;
 	else
 		mw = m->ww;
 	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
-			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
+			r = MIN(n, m->nmaster) - i;
+			h = (m->wh - my - gappx * (r - 1)) / r;
 			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
 			if (my + HEIGHT(c) < m->wh)
-				my += HEIGHT(c);
+				my += HEIGHT(c) + gappx;
 		} else {
-			h = (m->wh - ty) / (n - i);
-			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
+			r = n - i;
+			h = (m->wh - ty - gappx * (r - 1)) / r;
+			resize(c, m->wx + mw + g, m->wy + ty, m->ww - mw - g - (2*c->bw), h - (2*c->bw), False);
 			if (ty + HEIGHT(c) < m->wh)
-				ty += HEIGHT(c);
+			  ty += HEIGHT(c) + gappx;
 		}
 }
 
@@ -1947,10 +1970,12 @@ updategeom(void)
 				m->clients = c->next;
 				detachstack(c);
 				c->mon = mons;
-				if( attachbelow )
-					attachBelow(c);
-				else
-					attach(c);
+        if( attachbelow )
+          attachBelow(c);
+        else if( attachbottom )
+          attachBottom(c);
+        else
+          attach(c);
 				attachstack(c);
 			}
 			if (m == selmon)

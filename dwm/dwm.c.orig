@@ -424,6 +424,23 @@ attachBelow(Client *c)
 	c->mon->sel->next = c;
 
 }
+void attachBottom(Client *c) {
+    Client *last;
+
+    // Iterate through the list to find the last client
+    for (last = selmon->clients; last && last->next; last = last->next);
+
+    // If there's a last client, set its next pointer to the new client
+    if (last)
+        last->next = c;
+    else
+        // If there are no clients yet, the new client is the first client
+        selmon->clients = c;
+
+    // Set the new client's next pointer to NULL since it's the last client
+    c->next = NULL;
+}
+
 
 void
 attachstack(Client *c)
@@ -450,9 +467,15 @@ buttonpress(XEvent *e)
 	}
 	if (ev->window == selmon->barwin) {
 		i = x = 0;
-		do
+		unsigned int occ = 0;
+		for(c = m->clients; c; c=c->next)
+			occ |= c->tags == TAGMASK ? 0 : c->tags;
+		do {
+			/* Do not reserve space for vacant tags */
+			if (!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+				continue;
 			x += TEXTW(tags[i]);
-		while (ev->x >= x && ++i < LENGTH(tags));
+		} while (ev->x >= x && ++i < LENGTH(tags));
 		if (i < LENGTH(tags)) {
 			click = ClkTagBar;
 			arg.ui = 1 << i;
@@ -729,19 +752,18 @@ drawbar(Monitor *m)
 	int msx;
 
 	for (c = m->clients; c; c = c->next) {
-		occ |= c->tags;
+		occ |= c->tags == TAGMASK ? 0 : c->tags;
 		if (c->isurgent)
 			urg |= c->tags;
 	}
 	x = 0;
 	for (i = 0; i < LENGTH(tags); i++) {
+		/* Do not draw vacant tags */
+		if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
+			continue;
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
-		if (occ & 1 << i)
-			drw_rect(drw, x + boxs, boxs, boxw, boxw,
-				m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-				urg & 1 << i);
 		x += w;
 	}
 	w = TEXTW(m->ltsymbol);
@@ -1095,6 +1117,8 @@ manage(Window w, XWindowAttributes *wa)
 		XRaiseWindow(dpy, c->win);
 	if( attachbelow )
 		attachBelow(c);
+  else if( attachbottom )
+    attachBottom(c);
 	else
 		attach(c);
 	attachstack(c);
@@ -1453,6 +1477,8 @@ sendmon(Client *c, Monitor *m)
 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
 	if( attachbelow )
 		attachBelow(c);
+  else if( attachbottom )
+    attachBottom(c);
 	else
 		attach(c);
 	attachstack(c);
@@ -1942,10 +1968,12 @@ updategeom(void)
 				m->clients = c->next;
 				detachstack(c);
 				c->mon = mons;
-				if( attachbelow )
-					attachBelow(c);
-				else
-					attach(c);
+        if( attachbelow )
+          attachBelow(c);
+        else if( attachbottom )
+          attachBottom(c);
+        else
+          attach(c);
 				attachstack(c);
 			}
 			if (m == selmon)
