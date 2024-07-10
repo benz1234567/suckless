@@ -1092,7 +1092,8 @@ kscrollup(const Arg *a)
 	if (IS_SET(MODE_ALTSCREEN))
 		return;
 
-	if (n < 0) n = (-n) * term.row;
+  int half_page = term.row / 2;
+	if (n < 0) n = (-n) * half_page;
 	if (n > TSCREEN.size - term.row - TSCREEN.off) n = TSCREEN.size - term.row - TSCREEN.off;
 	while (!TLINE(-n)) --n;
 	TSCREEN.off += n;
@@ -1109,7 +1110,8 @@ kscrolldown(const Arg *a)
 	if (IS_SET(MODE_ALTSCREEN))
 		return;
 
-	if (n < 0) n = (-n) * term.row;
+  int half_page = term.row / 2;
+	if (n < 0) n = (-n) * half_page;
 	if (n > TSCREEN.off) n = TSCREEN.off;
 	TSCREEN.off -= n;
 	selscroll(0, -n);
