@@ -71,6 +71,11 @@ static const char *slockcmd[]  = { "slock", NULL };
 static const char *firefoxcmd[]  = { "firefox", NULL };
 static const char *nvimcmd[]  = { "st", "nvim", NULL };
 
+Autostarttag autostarttaglist[] = {
+	{.cmd = obsidiancmd, .tags = 1 << 8 },
+	{.cmd = NULL, .tags = 0 },
+};
+
 #include "movestack.c"
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
