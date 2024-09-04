@@ -83,6 +83,7 @@ typedef enum {
 	Style,
 	WebGL,
 	ZoomLevel,
+	ClipboardNotPrimary,
 	ParameterLast
 } ParamName;
 
@@ -226,6 +227,7 @@ static void reload(Client *c, const Arg *a);
 static void print(Client *c, const Arg *a);
 static void showcert(Client *c, const Arg *a);
 static void clipboard(Client *c, const Arg *a);
+static void copyclip(Client *c, const Arg *a);
 static void zoom(Client *c, const Arg *a);
 static void scrollv(Client *c, const Arg *a);
 static void scrollh(Client *c, const Arg *a);
@@ -293,6 +295,7 @@ static ParamName loadcommitted[] = {
 	SpellLanguages,
 	Style,
 	ZoomLevel,
+	ClipboardNotPrimary,
 	ParameterLast
 };
 
@@ -1824,15 +1827,24 @@ showcert(Client *c, const Arg *a)
 void
 clipboard(Client *c, const Arg *a)
 {
+	/* User defined choice of selection, see config.h */
+	GdkAtom	selection = GDK_SELECTION_PRIMARY;
+	if (curconfig[ClipboardNotPrimary].val.i > 0)
+		selection = GDK_SELECTION_CLIPBOARD;
+
 	if (a->i) { /* load clipboard uri */
 		gtk_clipboard_request_text(gtk_clipboard_get(
-		                           GDK_SELECTION_PRIMARY),
+                                          selection),
 		                           pasteuri, c);
 	} else { /* copy uri */
 		gtk_clipboard_set_text(gtk_clipboard_get(
-		                       GDK_SELECTION_PRIMARY), c->targeturi
+		                       selection), c->targeturi
 		                       ? c->targeturi : geturi(c), -1);
 	}
+}
+
+void copyclip(Client *c, const Arg *a) {
+    system("xclip -o | xclip -sel clip");
 }
 
 void
@@ -2125,9 +2137,7 @@ main(int argc, char *argv[])
 	c = newclient(NULL);
 	showview(NULL, c);
 
-  // const char *url = "https://x.dendy.xyz\nhttps://google.com";
-  Arg a = SETPROP("_SURF_URI", "_SURF_GO", PROMPT_GO);
-  spawn(c, &a);
+	loaduri(c, &arg);
 	updatetitle(c);
 
 	gtk_main();
