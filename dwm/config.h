@@ -66,6 +66,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 /*static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL }; */
 static const char *dmenucmd[] = { "dmenu_run", "-c", "-l", "20", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL }; 
 static const char *termcmd[]  = { "st", NULL };
+static const char *obsidiancmd[]  = { "obsidian", NULL };
 static const char *slockcmd[]  = { "slock", NULL };
 static const char *firefoxcmd[]  = { "firefox", NULL };
 static const char *nvimcmd[]  = { "st", "nvim", NULL };
@@ -78,6 +79,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = slockcmd } },
 	{ MODKEY|ShiftMask,             XK_f,      spawn,          {.v = firefoxcmd } },
 	{ MODKEY|ShiftMask,             XK_n,      spawn,          {.v = nvimcmd } },
+	{ MODKEY|ShiftMask,             XK_o,      spawn,          {.v = obsidiancmd } },
 	{ MODKEY,                       XK_c,      spawn,          SHCMD("pj") },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY|ShiftMask, 			      XK_b,	     spawn,		       SHCMD("bookmark")},
