@@ -31,7 +31,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Surf",    NULL,     NULL,           0,         0,          1,           0,        -1 },
+	//{ "Surf",    NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ "floating", NULL,     NULL,          0,         1,          0,           1,        -1 },
 	{ "st",      NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ NULL,      NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */

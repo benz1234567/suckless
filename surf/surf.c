@@ -238,6 +238,7 @@ static void togglefullscreen(Client *c, const Arg *a);
 static void togglecookiepolicy(Client *c, const Arg *a);
 static void toggleinspector(Client *c, const Arg *a);
 static void find(Client *c, const Arg *a);
+static void downloadthis(Client *c, const Arg *a);
 
 /* Buttons */
 static void clicknavigate(Client *c, const Arg *a, WebKitHitTestResult *h);
@@ -1744,6 +1745,13 @@ responsereceived(WebKitDownload *d, GParamSpec *ps, Client *c)
 {
 	download(c, webkit_download_get_response(d));
 	webkit_download_cancel(d);
+}
+
+void
+downloadthis(Client *c, const Arg *a)
+{
+	Arg d = DOWNLOAD(geturi(c), geturi(c));
+	spawn(c, &d);
 }
 
 void
