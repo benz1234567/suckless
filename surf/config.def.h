@@ -92,7 +92,7 @@ static WebKitFindOptions findopts = WEBKIT_FIND_OPTIONS_CASE_INSENSITIVE |
         .v = (const char *[]){ "st", "-e", "/bin/sh", "-c",\
              "cd /home/benny/Downloads; curl -g -L -J -O -A \"$1\" -b \"$2\" -c \"$2\"" \
              " -e \"$3\" \"$4\" || curl -g -o $(filefromweb \"$4\") -L -A \"$1\" -b \"$2\" -c \"$2\" -e \"$3\" \"$4\"" \
-             ";sleep 5;read", \
+             ";read", \
              "surf-download", useragent, cookiefile, r, u, NULL \
         } \
 }
