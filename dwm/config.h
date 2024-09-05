@@ -68,7 +68,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-c", "-l", "20", "-i", "-m", dme
 static const char *termcmd[]  = { "st", NULL };
 static const char *obsidiancmd[]  = { "obsidian", NULL };
 static const char *slockcmd[]  = { "slock", NULL };
-static const char *firefoxcmd[]  = { "firefox", NULL };
+static const char *browsercmd[]  = { "surf", NULL };
 static const char *nvimcmd[]  = { "st", "nvim", NULL };
 
 Autostarttag autostarttaglist[] = {
@@ -82,7 +82,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = slockcmd } },
-	{ MODKEY|ShiftMask,             XK_f,      spawn,          {.v = firefoxcmd } },
+	{ MODKEY|ShiftMask,             XK_f,      spawn,          {.v = browsercmd } },
 	{ MODKEY|ShiftMask,             XK_n,      spawn,          {.v = nvimcmd } },
 	{ MODKEY|ShiftMask,             XK_o,      spawn,          {.v = obsidiancmd } },
 	{ MODKEY,                       XK_c,      spawn,          SHCMD("pj") },
