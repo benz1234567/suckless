@@ -177,6 +177,7 @@ static Key keys[] = {
 
 	{ MODKEY|GDK_SHIFT_MASK,              XK_c,           spawn,       SHCMD("COPY") },
 	{ MODKEY|GDK_SHIFT_MASK,              XK_b,           spawn,       SHCMD("surfbookmark") },
+	{ MODKEY,              XK_b,           spawn,       SHCMD("st -c 'floating' -g 150x50 nvim $HOME/.sensitive/surf-bookmarks.txt") },
 
 	{ MODKEY,                GDK_KEY_p,      clipboard,  { .i = 1 } },
 	{ MODKEY,                GDK_KEY_y,      clipboard,  { .i = 0 } },
