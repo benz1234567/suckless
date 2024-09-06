@@ -1851,10 +1851,6 @@ clipboard(Client *c, const Arg *a)
 	}
 }
 
-void copyclip(Client *c, const Arg *a) {
-    system("xclip -o | xclip -sel clip");
-}
-
 void
 zoom(Client *c, const Arg *a)
 {

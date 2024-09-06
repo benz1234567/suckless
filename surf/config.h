@@ -176,6 +176,7 @@ static Key keys[] = {
 	{ MODKEY,                GDK_KEY_plus,   zoom,       { .i = +1 } },
 
 	{ MODKEY|GDK_SHIFT_MASK,              XK_c,           spawn,       SHCMD("COPY") },
+	{ MODKEY|GDK_SHIFT_MASK,              XK_b,           spawn,       SHCMD("surfbookmark") },
 
 	{ MODKEY,                GDK_KEY_p,      clipboard,  { .i = 1 } },
 	{ MODKEY,                GDK_KEY_y,      clipboard,  { .i = 0 } },
