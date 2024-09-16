@@ -1,0 +1,6 @@
+#!/bin/bash
+
+xdotool type "$(xclip -o -sel clip)"
+cd /home/benny
+touch dawd.txt
+
