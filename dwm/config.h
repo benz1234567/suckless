@@ -114,8 +114,16 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{ MODKEY, 					          	XK_Insert, spawn,      	   SHCMD("pastebookmark")},
+  /* volume control */
+  { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer -q set Master 5%+") },
+  { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer -q set Master 5%-") },
+  { 0, XF86XK_AudioMute,        spawn, SHCMD("amixer -q set Master toggle") },
 
+  /* Brightness control */
+  { 0, XF86XK_MonBrightnessUp,   spawn, SHCMD("brightnessctl set +10%") },
+  { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 10%-") },
+
+  { MODKEY, 					          	XK_Insert, spawn,      	   SHCMD("pastebookmark")},
 };
 
 /* button definitions */
