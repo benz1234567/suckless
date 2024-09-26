@@ -4,7 +4,7 @@ statefile="$HOME/.nightlight_state"
 
 while true; do
   [ -f "$statefile" ] || continue
-  [[ "$(date '+%H')" -gt "19" || "$(date '+%H')" -lt "6" ]] && \
+  [[ "$(date '+%H')" -gt "18" || "$(date '+%H')" -lt "5" ]] && \
   { redshift -O 1000 >/dev/null 2>&1; true; } || \
   redshift -x >/dev/null 2>&1
 	sleep 1

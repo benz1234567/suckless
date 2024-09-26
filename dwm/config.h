@@ -135,6 +135,7 @@ static const Key keys[] = {
   { 0, XF86XK_MonBrightnessDown, spawn, SHCMD("brightnessctl set 10%-") },
 
   { MODKEY, 					          	XK_Insert, spawn,      	   SHCMD("pastebookmark")},
+  { MODKEY|ShiftMask, 					          	XK_p,      spawn,      	   SHCMD("passmenu --type")},
 };
 
 /* button definitions */
